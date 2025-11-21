@@ -10,5 +10,7 @@ public class Program
         app.MapGet("/", () => "Hello World!");
 
         app.Run();
+
+        var a = new BankAccount(new Money(10, Currency.USD));
     }
 }
