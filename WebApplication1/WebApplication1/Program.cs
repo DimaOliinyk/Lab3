@@ -1,3 +1,5 @@
+using BankAccountService.Model;
+
 namespace BankAcountService;
 
 public class Program
@@ -7,10 +9,26 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         var app = builder.Build();
 
-        app.MapGet("/", () => "Hello World!");
+        app.MapGet("/", () => "Bank account service is up");
 
         app.Run();
 
-        var a = new BankAccount(new Money(10, Currency.USD));
+        // TODO: Create BankAccountController to covert json body to BankAccountRecord
+
+        app.MapPost("api/v1/withdraw", () => 
+        {
+            // TODO: withdraw from account
+            // And save to time db
+        });
+        app.MapPost("api/v1/replenish", () => 
+        {
+            // TODO: replenish account
+            // And save to time db
+        });
+        app.MapPost("api/v1/interestaccrual", () => 
+        {
+            // TODO: replenish account
+            // And save to time db
+        });
     }
 }

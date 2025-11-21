@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace BankAcountService;
 
-namespace BankAccount.tests
+public enum Currency
 {
-    public enum Currency
-    {
-        USD,
-        UAH,
-        EUR
-    }
+    USD,
+    UAH,
+    EUR
 }
