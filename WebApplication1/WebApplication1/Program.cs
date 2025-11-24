@@ -1,7 +1,7 @@
 using BankAccountService.Model;
 using BankAccountService.Model.DTOs;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace BankAcountService;
 
@@ -17,26 +17,43 @@ public class Program
 
         app.MapGet("/", () => "Bank account service is up");
 
-        app.Run();
-
-        // TODO: Create BankAccountController to covert json body to BankAccountRecord
-
-        app.MapPost("api/v1/{function}", (string function, [FromBody] string jsonAccount) =>
+        app.MapPut("/api/v1/{function}", async (string function, HttpRequest request) =>
         {
-            var bankAccRecord = BankAccountDTO.ConvertFromJson(jsonAccount);
+            using var sr = new StreamReader(request.Body, System.Text.Encoding.UTF8);
+            var rawBody = await sr.ReadToEndAsync();
+            Debug.WriteLine(rawBody);
+
+            var dto = BankAccountDTO.ConvertFromJson(rawBody);
+            var rec = dto.ToBankAccountRecord();
+            var bankAcc = rec.BankAccount;
+
+            if (dto.RequestAmount is null || dto.RequestCurrency is null) 
+            {
+                return Results.Problem("Parameter was not specified");
+            }
+
+            var reqMoney = new Money((decimal)dto.RequestAmount, (Currency)dto.RequestCurrency);
 
             switch (function)
-            {
+            { 
                 case "replenish":
-                    throw new NotImplementedException();
+                    bankAcc.Replenish(reqMoney);
+                    break;
                 case "withdraw":
-                    throw new NotImplementedException();
+                    bankAcc.Withdraw(reqMoney);
+                    break;
                 case "interestaccrual":
-                    throw new NotImplementedException();
+                    bankAcc.InterestAccrual(reqMoney.Amount);
+                    break;
                 default:
-                    throw new NotImplementedException();
+                    return Results.Problem("An unexpected error occurred.");
             };
-            // And save to time db
+
+            var resultDto = new BankAccountDTO(rec);
+            return Results.Ok(resultDto.ConvertToJson());
+            // TODO: And save to time db
         });
+
+        app.Run();
     }
 }

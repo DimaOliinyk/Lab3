@@ -5,15 +5,21 @@ using Newtonsoft.Json;
 
 namespace BankAccountService.Model.DTOs;
 
-// Example of Json: {"Id":1,"Balance":10.0,"Currency":"USD"}
+// Example of Json: {"Id":1,"Balance":10.0,"Currency":"USD","RequestAmount":null,"RequestCurrency":null}
+// Example of Json with request: {"Id":1,"Balance":10.0,"Currency":"USD","RequestAmount":5.0,"RequestCurrency":0}
+
+public record RequestValues(decimal Amount, Currency Currency);
 
 public class BankAccountDTO
 {
-    public BankAccountDTO(BankAccountRecord bankAccount)
+    public BankAccountDTO(BankAccountRecord bankAccount, RequestValues? requestValues = null)
     {
         Id = bankAccount.Id;
         Balance = bankAccount.BankAccount.Balance.Amount;
         Currency = bankAccount.BankAccount.Balance.Currency;
+
+        RequestCurrency = (requestValues != null) ? requestValues.Currency : null;
+        RequestAmount = (requestValues != null) ? requestValues.Amount : null;
     }
 
     public BankAccountDTO() { }
@@ -23,6 +29,9 @@ public class BankAccountDTO
     
     [JsonConverter(typeof(StringEnumConverter))]
     public Currency Currency { get; set; }
+
+    public decimal? RequestAmount { get; set; }
+    public Currency? RequestCurrency { get; set; }
 
     public BankAccountRecord ToBankAccountRecord() =>
         new BankAccountRecord(Id, 
