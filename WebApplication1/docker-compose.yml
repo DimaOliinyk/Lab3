@@ -1,0 +1,8 @@
+services:
+  bankaccountservice:
+    image: ${DOCKER_REGISTRY-}bankaccountservice
+    build:
+      context: .
+      dockerfile: WebApplication1/Dockerfile
+    ports:
+      - 8088:8080

@@ -68,6 +68,8 @@ public class Program
             // TODO: And save to time db
         });
 
+        Console.WriteLine("Before run");
+
         app.Run();
     }
 }
