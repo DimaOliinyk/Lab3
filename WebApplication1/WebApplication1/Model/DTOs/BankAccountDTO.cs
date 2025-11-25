@@ -5,8 +5,11 @@ using Newtonsoft.Json;
 
 namespace BankAccountService.Model.DTOs;
 
-// Example of Json: {"Id":1,"Balance":10.0,"Currency":"USD","RequestAmount":null,"RequestCurrency":null}
-// Example of Json with request: {"Id":1,"Balance":10.0,"Currency":"USD","RequestAmount":5.0,"RequestCurrency":0}
+// Example of Json:
+// {"Id":1,"Balance":10.0,"Currency":"USD","RequestAmount":null,"RequestCurrency":null}
+
+// Example of Json with request:
+// {"Id":1,"Balance":10.0,"Currency":"USD","RequestAmount":5.0,"RequestCurrency":0}
 
 public record RequestValues(decimal Amount, Currency Currency);
 
