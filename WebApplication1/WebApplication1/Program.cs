@@ -65,7 +65,6 @@ public class Program
 
             var resultDto = new BankAccountDTO(rec);
             return Results.Ok(resultDto.ConvertToJson());
-            // TODO: And save to time db
         });
 
         Console.WriteLine("Before run");
