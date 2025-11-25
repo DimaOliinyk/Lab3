@@ -2,6 +2,7 @@ using BankAccountService;
 using BankAccountService.Database;
 using BankAccountService.Model;
 using BankAccountService.Model.DTOs;
+using System.Diagnostics;
 
 namespace BankAcountService;
 
@@ -19,21 +20,21 @@ public class Program
             (BankAccountRecord bankAccRec, Money m) =>
             {
                 bankAccRec.BankAccount.Replenish(m);
-                //saver.SaveReplenish(bankAccRec.Id, m.Amount, m.Currency);
+                saver.SaveReplenish(bankAccRec.Id, m.Amount, m.Currency);
             });
         BankAccountTransactionRegestry.RegisterTransaction(
             "withdraw",
             (BankAccountRecord bankAccRec, Money m) =>
             {
                 bankAccRec.BankAccount.Withdraw(m);
-                //saver.SaveWithdraw(bankAccRec.Id, m.Amount, m.Currency);
+                saver.SaveWithdraw(bankAccRec.Id, m.Amount, m.Currency);
             });
         BankAccountTransactionRegestry.RegisterTransaction(
             "interestaccrual",
             (BankAccountRecord bankAccRec, Money m) =>
             {
                 bankAccRec.BankAccount.InterestAccrual(m.Amount);
-                //saver.SaveInterestAccrual(bankAccRec.Id, m.Amount);
+                saver.SaveInterestAccrual(bankAccRec.Id, m.Amount);
             });
 
         app.MapGet("/", () => "Bank account service is up");
@@ -56,8 +57,9 @@ public class Program
             {
                 BankAccountTransactionRegestry.CallTransacion(action, rec, reqMoney);
             }
-            catch
+            catch (Exception ex)
             {
+                Debug.WriteLine(ex.Message);
                 return Results.Problem("An unexpected error occurred.");
             }
 

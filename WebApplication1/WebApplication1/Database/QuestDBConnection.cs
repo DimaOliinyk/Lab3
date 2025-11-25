@@ -25,7 +25,7 @@ public class QuestDBConnection : ITransactionSaver
     {
         _sender.Table("InetersetAccruals")
                .Column("AccountId", id)
-               .Column("Procentage", procentage)
+               .Column("Procentage", (double)procentage)
                .At(DateTime.UtcNow);
         _sender.Send();
     }
@@ -34,7 +34,7 @@ public class QuestDBConnection : ITransactionSaver
     {
         _sender.Table("Replenishments")
                .Column("AccountId", id)
-               .Column("Amount", amount)
+               .Column("Amount", (double)amount)
                .Column("Currency", _convertEnumToString(currency))
                .At(DateTime.UtcNow);
         _sender.Send();
@@ -44,7 +44,7 @@ public class QuestDBConnection : ITransactionSaver
     {
         _sender.Table("Withdrawls")
                .Column("AccountId", id)
-               .Column("Amount", amount)
+               .Column("Amount", (double)amount)
                .Column("Currency", _convertEnumToString(currency))
                .At(DateTime.UtcNow);
         _sender.Send();
